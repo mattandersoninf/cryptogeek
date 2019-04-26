@@ -4,6 +4,7 @@
 import requests
 from bs4 import BeautifulSoup as soup
 
+# to be used for organizing the information scraped into a csv file
 # import csv
 
 # for printing to analyze
