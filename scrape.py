@@ -7,12 +7,13 @@ import requests
 from bs4 import BeautifulSoup as soup
 
 # to be used for organizing the information scraped into a csv file
-# import csv
+import csv
 
 # use pandas for storing information in a dataframe
 # you can throw it directly into files but in case you want to structure
 # the information as you get it and throw it between documents or databases
 # this is convenient
+# more likely to use because of previous experience with matplotlib and jupyter nb
 import pandas as pd
 
 # collections is another library for making datastructures to pass around data
@@ -65,8 +66,18 @@ def getCryptoCompareSoup():
         # give sleenium page source to beautifulsoup
         cryptoCompareSoup = soup(driver.page_source,'html.parser')
         
-        pprint(cryptoCompareSoup.find_all('span',{'class':'mobile-name ng-binding'}))
-        
+        print(cryptoCompareSoup.find_all('span',{'class':'desktop-name ng-binding'})[0].text.strip())
+        #print(cryptoCompareSoup.find_all('span',{'class':'mobile-name ng-binding'})[0].text.strip())
+        # if the file does not exist in oyur current directory, it wil be made
+        # else open it in your current directory
+        # 'wb' = writeback
+        with open('crypto_currency.csv', 'wb') as csvfile:
+            
+            # create csv writing obj
+            csvwriter = csv.writer(csvfile)
+            
+            
+            
         """
         # request the cryptocompare html
         cryptoCompareHtml = driver.execute_script("return document.documentElement.innerHTML;") 
