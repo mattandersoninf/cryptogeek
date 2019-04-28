@@ -32,7 +32,10 @@ from selenium import webdriver
 import re
 
 
-cryptoCompareUrl = 'https://www.cryptocompare.com/'
+from datetime import datetime
+
+
+cryptoCompareUrl = 'https://www.cryptocompare.com/coins/list/USD/1'
 
 """
 class mainScraper(self,siteList):
@@ -51,50 +54,51 @@ def getWebpage(url):
 """    
     
 
+
+
 # function to scrape cryptocompare.com
-def getCryptoCompareSoup():
+def scrapeCryptoCompare():
     
     # get google Chrome webdriver
     with webdriver.Chrome() as driver:
         
-        # give the driver 3o seconds to open up the browser
+        # give the driver 30 seconds to open up the browser
         driver.implicitly_wait(30)
         
         # open up cryptocompare
         driver.get(cryptoCompareUrl)
         
-        # give sleenium page source to beautifulsoup
+        # give selenium page source to beautifulsoup
         cryptoCompareSoup = soup(driver.page_source,'html.parser')
+        """
+        # soup element - place - text
+        cryptoName = [item.text.strip() for item in cryptoCompareSoup.find_all('span',{'class':'mobile-name ng-binding'})]
         
-        print(cryptoCompareSoup.find_all('span',{'class':'desktop-name ng-binding'})[0].text.strip())
-        #print(cryptoCompareSoup.find_all('span',{'class':'mobile-name ng-binding'})[0].text.strip())
-        # if the file does not exist in oyur current directory, it wil be made
+        cryptoPrice = [item.text.strip() for item in cryptoCompareSoup.find_all('div', {'class':['current-price-value ng-binding','current-price-value ng-binding highlight-down value-down','current-price-value ng-binding highlight-up value-up']})]
+        
+        cryptoVolume =[item.text.strip() for item in cryptoCompareSoup.find_all('td',{'class':'full-volume col-selected'})]
+        
+        # in case this line does not work, try this to make the findChild function more specific to the class a
+        
+        crypto24HrDelta = [item.findChild('span').text.strip() for item in cryptoCompareSoup.find_all('td',{'ng-class':["{'col-selected':tableColumns[6].sortApplied}"]})]    
+        """
+        
+        cryptoCompareDataFrame = pd.DataFrame({'Name':[item.text.strip() for item in cryptoCompareSoup.find_all('span',{'class':'mobile-name ng-binding'})],
+                                               'Price':[item.text.strip() for item in cryptoCompareSoup.find_all('div', {'class':['current-price-value ng-binding','current-price-value ng-binding highlight-down value-down','current-price-value ng-binding highlight-up value-up']})],
+                                               'Volume':[item.text.strip() for item in cryptoCompareSoup.find_all('td',{'class':'full-volume col-selected'})],
+                                               '24HrDelta':[item.findChild('span').text.strip() for item in cryptoCompareSoup.find_all('td',{'ng-class':["{'col-selected':tableColumns[6].sortApplied}"]})],
+                                               'Time':f"{datetime.now(): %Y-%m-%d %H:%M:%S}"})
+                
+        cryptoCompareDataFrame.to_csv('crypto_currency.csv', index = False, mode ='a', header = False)
+    
+        """
+        # if the file does not exist in your current directory, it wil be made
         # else open it in your current directory
         # 'wb' = writeback
         with open('crypto_currency.csv', 'wb') as csvfile:
             
             # create csv writing obj
             csvwriter = csv.writer(csvfile)
-            
-            
-            
-        """
-        # request the cryptocompare html
-        cryptoCompareHtml = driver.execute_script("return document.documentElement.innerHTML;") 
-        """
-        
-        """
-        # form a defaultdict to grab information from the 
-        crytoCompareDict = c.defaultdict(dict)
-        """
-        
-        
-        """
-        # requests.get(cryptoCompareUrl)
-        
-        #cryptoCompareHtml = driver.page_source
-        
-        #BeautifulSoup(cryptoCompareRequest, '')
         """
         
         """
@@ -104,10 +108,6 @@ def getCryptoCompareSoup():
         driver.close()
         """
         
-        """
-        # return the innerhtml of the web page
-        return cryptoCompareHtml
-        """
 
 # function to scrape cryptocurrency information from  https://www.cryptocompare.com/
 #def scrapeCryptoCompare():
@@ -117,4 +117,4 @@ def getCryptoCompareSoup():
 
 if __name__=="__main__":
     
-    pprint(getCryptoCompareSoup())
+    scrapeCryptoCompare()
