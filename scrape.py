@@ -5,6 +5,7 @@ import requests
 
 # grabbing static html
 from bs4 import BeautifulSoup as soup
+from bs4 import SoupStrain as strain
 
 # to be used for organizing the information scraped into a csv file
 import csv
@@ -31,6 +32,7 @@ from selenium import webdriver
 # construct regular expressions
 import re
 
+import os
 
 from datetime import datetime
 
@@ -88,8 +90,10 @@ def scrapeCryptoCompare():
                                                'Volume':[item.text.strip() for item in cryptoCompareSoup.find_all('td',{'class':'full-volume col-selected'})],
                                                '24HrDelta':[item.findChild('span').text.strip() for item in cryptoCompareSoup.find_all('td',{'ng-class':["{'col-selected':tableColumns[6].sortApplied}"]})],
                                                'Time':f"{datetime.now(): %Y-%m-%d %H:%M:%S}"})
-                
-        cryptoCompareDataFrame.to_csv('crypto_currency.csv', index = False, mode ='a', header = False)
+        
+        # generate the csv file with the header if the file does not already exist
+        # otherwise write to the file without inserting a header (if you're appending, the header just turns into another row)        
+        cryptoCompareDataFrame.to_csv('crypto_currency.csv', index = False, mode ='a', header = os.path.isfile('/Users/mattandersoninf/Programming/cryptogeek','r')) 
     
         """
         # if the file does not exist in your current directory, it wil be made
