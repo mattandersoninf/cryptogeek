@@ -5,7 +5,7 @@ import requests
 
 # grabbing static html
 from bs4 import BeautifulSoup as soup
-from bs4 import SoupStrain as strain
+from bs4 import SoupStrainer as strain
 
 # to be used for organizing the information scraped into a csv file
 import csv
@@ -65,7 +65,7 @@ def scrapeCryptoCompare():
     with webdriver.Chrome() as driver:
         
         # give the driver 30 seconds to open up the browser
-        driver.implicitly_wait(30)
+        driver.set_page_load_timeout(30)
         
         # open up cryptocompare
         driver.get(cryptoCompareUrl)
@@ -93,7 +93,7 @@ def scrapeCryptoCompare():
         
         # generate the csv file with the header if the file does not already exist
         # otherwise write to the file without inserting a header (if you're appending, the header just turns into another row)        
-        cryptoCompareDataFrame.to_csv('crypto_currency.csv', index = False, mode ='a', header = os.path.isfile('/Users/mattandersoninf/Programming/cryptogeek','r')) 
+        cryptoCompareDataFrame.to_csv('crypto_currency.csv', index = False, mode ='a', header = os.path.isfile('/Users/mattandersoninf/Programming/cryptogeek')) 
     
         """
         # if the file does not exist in your current directory, it wil be made
