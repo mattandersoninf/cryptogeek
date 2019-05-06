@@ -125,6 +125,7 @@ def scrapeCryptoCompare():
 
 class CoinMarketSpider(self, scrapy.Spider):
 
+
     start_urls = [coinMarketCapUrl]
 
     """
@@ -138,6 +139,8 @@ class CoinMarketSpider(self, scrapy.Spider):
             yield{
                 'Name': tablerow.xpath("td[contains(@class,'text-left col-symbol')]/text()".get())
             }
+
+
 
 
 
