@@ -22,7 +22,6 @@ import pandas as pd
 
 import collections as c
 
-
 # for printing to analyze
 from pprint import pprint
 
@@ -37,12 +36,8 @@ import os
 from datetime import datetime
 
 
-import scrapy
-from scrapy.selector import Selector
-from scrapy.http import HtmlResponse
-
 cryptoCompareUrl = 'https://www.cryptocompare.com/coins/list/USD/1'
-coinMarketCapUrl = 'https://coinmarketcap.com/all/views/all/'
+
 """
 class mainScraper(self,siteList):
     
@@ -115,32 +110,6 @@ def scrapeCryptoCompare():
         # close chrome browswer that you opened with selenium
         driver.close()
         """
-        
-
-# function to scrape cryptocurrency information from  https://www.cryptocompare.com/
-#def scrapeCryptoCompare():
-    
-    #form the 
-
-
-class CoinMarketSpider(self, scrapy.Spider):
-
-
-    start_urls = [coinMarketCapUrl]
-
-    """
-    response = HtmlResponse(url=coinMarketCapUrl)
-
-    selector = Selector(response=response)
-    """
-
-    def parse(self, response):
-        for tablerow in response.xpath("'//tr[contains(@role,'row')]"):
-            yield{
-                'Name': tablerow.xpath("td[contains(@class,'text-left col-symbol')]/text()".get())
-            }
-
-
 
 
 
