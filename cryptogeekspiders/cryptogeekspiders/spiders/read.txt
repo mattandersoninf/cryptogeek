@@ -1,3 +1,0 @@
-directory and file to store scraped information
-
-data/coinmarketcap_data.csv
